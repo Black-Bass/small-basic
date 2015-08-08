@@ -1,0 +1,23 @@
+rangees = 8             'variable rangees
+colonnes = 8            'variable collonnes
+haut = 40               'variable hauteur cubes
+long = 100              'variable longueur cube
+idx_1 = 1
+idx_2 = 2
+ 
+For r = 1 To rangees    'dessine les rangees de 1 a 8 
+  For c = 1 To colonnes 'dessine le collones de 1 a 8
+    GraphicsWindow.BrushColor = GraphicsWindow.GetRandomColor() 'donne couleur au hazard au cube
+    boxe = Shapes.AddRectangle(long, haut)                     'creer les cubes dans variable boxes
+    Shapes.Move(boxe, c * long, r * haut)                      'definie a boxes le nouvelles coordonnees x et y
+    
+    boxes[idx_1] = c * long
+    boxes[idx_2] = r * haut
+    idx_1 = idx_1 + 2
+    idx_2 = idx_2 + 2
+EndFor 
+EndFor 
+
+For i = 1 To 128
+  TextWindow.WriteLine(boxes[i])
+EndFor

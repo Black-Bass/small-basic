@@ -1,0 +1,87 @@
+GraphicsWindow.BackgroundColor = "DarkBlue"  ' fond couleur
+paddle = Shapes.AddRectangle(120, 12)        'creer paddle
+ball = Shapes.AddEllipse(16, 16)             'creer balle
+GraphicsWindow.MouseMove = OnMouseMove       'routine
+
+'********************************************************************************************************************
+
+rangees = 8             'variable rangees
+colonnes = 8            'variable collonnes
+haut = 40               'variable hauteur cubes
+long = 100              'variable longueur cubes
+idx_1 = 1               'variable index de array 
+idx_2 = 2               'variable index de array
+
+For r = 1 To rangees    'dessine les rangees de 1 a 8 
+  For c = 1 To colonnes 'dessine le collones de 1 a 8
+    GraphicsWindow.BrushColor = GraphicsWindow.GetRandomColor() 'donne couleur au hazard au cube
+    boxe = Shapes.AddRectangle(long, haut)                     'creer les cubes dans variable boxes
+    Shapes.Move(boxe, c * long, r * haut)                      'definie a boxes le nouvelles coordonnees x et y
+    
+    boxes[idx_1] = c * long     ' met coor x des cubes dans array dans l'ordre impair
+    boxes[idx_2] = r * haut     'met coor y des cubes dans array dans l'ordre pair
+    idx_1 = idx_1 + 2           'augmente le numero de l'index par 2 resultat on a toujours le chiffre impair
+    idx_2 = idx_2 + 2           'augmente le numero de l'index par 2 resultat on a toujours le chiffre pair
+  EndFor 
+EndFor 
+
+'********************************************************************************************************************
+
+gh = GraphicsWindow.Height    'taille windows haut.
+ 
+x = 0        ' X coordonee de balle start
+y = gh - 28   ' Y coordonee de balle start
+deltaX = 1    'X pas balle
+deltaY = -1   'Y pas balle
+
+'*******************************************************************************************************************
+'*******************************************************************************************************************
+
+RunLoop:      'etiquette cycle
+  x = x + deltaX  '1 pas X
+  y = y + deltaY  '1 pas Y
+   
+  gw = GraphicsWindow.Width 
+  gh = GraphicsWindow.Height
+  
+'****************************************************************************************************************** *
+  
+  If (x >= gw - 16 or x <= 0) Then ' si balle atteind les limites cotes de la fenetre graphique...
+    deltaX = -deltaX               ' on change la direction balle
+  EndIf 
+  If (y <= 0) Then                 ' si balle atteind la limites haut de la fenetre graphique...
+    deltaY = -deltaY               ' on change la direction balle
+  EndIf 
+  
+'********************************************************************************************************************
+ndboxes = Array.GetItemCount(boxes) / 2  
+
+For b = 1 To ndboxes
+    If (y =  - 40 and x >=  and x <=  + 100) Then    
+    deltaY = -deltaY                                         
+  EndIf 
+Endfor
+'******************************************************************************************************************** 
+  padX = Shapes.GetLeft(paddle)    ' mettre point gauche paddle dans variable
+  If (y = gh - 28 and x >= padX and x <= padX + 120) Then    'si balle touche paddle ...
+    deltaY = -deltaY                                         'on change la direction balle  
+  EndIf 
+   
+   Shapes.Move(ball, x, y)       'si balle touche pas paddle, balle continue meme direction 
+  Program.Delay(5)          
+   
+  If (y < gh) Then            ' si balle atteind pas la limites bas de la fenetre graphique
+    Goto RunLoop               'balle  continue meme direction (reprend au debut cycle(etiquette))   
+  'FIN RUNLOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
+  EndIf             
+  GraphicsWindow.ShowMessage("Vous avez perdu", "Casse briques")  'sinon fin jeu
+  
+'********************************************************************************************************************
+  
+'********************************************************************************************************************
+
+Sub OnMouseMove                          'ROUTINE
+  paddleX = GraphicsWindow.MouseX        'prend X coordonee souris 
+  Shapes.Move(paddle, paddleX - 60, GraphicsWindow.Height - 12) 
+  'defini les coordonee paddle par rapport a souris et bas fenetre graph.
+EndSub 
